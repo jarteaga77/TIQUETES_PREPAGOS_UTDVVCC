@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="27950271-65db-4114-bf81-b1c7feeecd19">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha_ini" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_fin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT acta.fecha,acta.id_acta_consecutivo,depe.nit_depe,(depe.depe_descripcion ||''||item.item_depen_descrip)AS dependencia,
+(de.consecutivo_inicial||'-'||de.consecutivo_final)AS rango,
+(cat.cat_nombre ||'-'||tea.tea_nombre ||' año '|| etp.etp_anio)AS descripcion,acta.diferencia
+
+FROM ventas.cambio_tiquete_dependencias acta JOIN ventas.detalle_entregados_dependencia de ON de.id_actacambio=acta.id_acta_consecutivo
+JOIN dependencias.item_dependencia item ON acta.id_dependencia=item.id_item_depen
+JOIN dependencias.dependencia depe ON depe.id_dependencia=item.id_dependencia
+JOIN inventario.especificacion_tiquete_prepago etp ON de.id_esp_tiquete=etp.etp_id
+JOIN inventario.categoria cat ON cat.cat_id=etp.cat_id
+JOIN inventario.tipo_eje_adicional tea ON tea.tea_id=etp.tea_id
+
+WHERE acta.fecha between $P{fecha_ini} AND $P{fecha_fin}
+ORDER BY acta.id_acta_consecutivo ASC]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="id_acta_consecutivo" class="java.lang.Long"/>
+	<field name="nit_depe" class="java.lang.Long"/>
+	<field name="dependencia" class="java.lang.String"/>
+	<field name="rango" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="diferencia" class="java.lang.Long"/>
+	<title>
+		<band height="12">
+			<staticText>
+				<reportElement uuid="d5fb498a-30c1-480c-8d5a-e839a494dd60" x="233" y="0" width="114" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIQUETES ENTREGADOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="24">
+			<staticText>
+				<reportElement uuid="8d6abdf1-292f-48b6-aed0-5886756ea00f" x="2" y="12" width="553" height="12"/>
+				<textElement/>
+				<text><![CDATA[------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7bd87605-44d5-4599-901e-980fdbe8007c" x="0" y="0" width="31" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d92bd2fd-553b-4367-9481-cfa7d289c770" x="63" y="0" width="28" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="784ac128-b568-48e7-858b-d526f7c47aa8" x="104" y="0" width="32" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9725a71a-2804-4699-8849-fe1f3da475d2" x="184" y="0" width="66" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dependencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8a5dfe97-e34a-4dec-823a-8c13ed0e630f" x="292" y="0" width="30" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rango]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="76e2c779-f351-440a-a8fb-59f9a01de2de" x="381" y="0" width="51" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f6ca6599-a594-4423-b829-fa67f5ac91e6" x="484" y="0" width="48" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement uuid="52ba76be-5b8d-4a0a-931f-4245a32e5b73" x="0" y="0" width="63" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="46ae4cb1-9cdd-4cdd-9dc5-d299a8b3ac5a" x="63" y="0" width="41" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_acta_consecutivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cb00e51a-903c-4105-82cf-c13a34873b9b" x="104" y="0" width="79" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nit_depe}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="4e6724cf-da4d-40f0-932c-8ef7f50ba335" x="184" y="0" width="108" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="48b5ecde-4c23-4258-9c2e-b4528683bb85" x="292" y="0" width="89" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rango}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="988e8856-3176-42fe-bb32-a6067f10d6d9" x="381" y="0" width="103" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="7adf1e4f-4d08-406c-8864-595bbbcb1c5d" x="484" y="0" width="71" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" printOrder="Horizontal" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8769f5d2-944d-44b0-8a5a-82f5c9a2a8ce">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="inicio" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/jarteaga/Documentos/Sistema Prepagos/iteracion 7/implementacion/Sistema Control Tiquetes Prepago/src/sysctp/reportes/venta/consultaxfechas/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[SELECT v.ven_recibo_caja,
+v.cli_nit,
+v.ven_fecha_hora,
+dv.dv_serial_1,
+dv.dv_serial_2,
+cat.cat_nombre,
+tea.tea_nombre,
+fp_descripcion,
+((dv.dv_serial_2 - dv.dv_serial_1 +1)*etp.etp_precio) AS subtotal
+FROM ventas.venta v JOIN ventas.detalle_venta dv ON v.ven_id=dv.ven_id 
+JOIN inventario.especificacion_tiquete_prepago etp ON dv.etp_id=etp.etp_id 
+JOIN inventario.tipo_eje_adicional tea ON etp.tea_id=tea.tea_id 
+JOIN inventario.categoria cat ON etp.cat_id=cat.cat_id 
+JOIN ventas.pago p ON p.ven_id=v.ven_id JOIN ventas.forma_de_pago f ON
+f.fp_id=p.fp_id 
+JOIN ventas.cuenta_bancaria cta ON p.cban_id=cta.cban_id 
+WHERE v.ven_fecha_hora BETWEEN $P{inicio} AND $P{fin}
+GROUP BY v.ven_recibo_caja, 
+v.cli_nit,
+v.ven_fecha_hora,
+dv.dv_serial_1, 
+dv.dv_serial_2,
+cat.cat_nombre,
+tea.tea_nombre,
+etp.etp_precio,
+fp_descripcion]]>
+	</queryString>
+	<field name="ven_recibo_caja" class="java.lang.String"/>
+	<field name="cli_nit" class="java.lang.Long"/>
+	<field name="ven_fecha_hora" class="java.sql.Timestamp"/>
+	<field name="dv_serial_1" class="java.lang.Long"/>
+	<field name="dv_serial_2" class="java.lang.Long"/>
+	<field name="cat_nombre" class="java.lang.String"/>
+	<field name="tea_nombre" class="java.lang.String"/>
+	<field name="fp_descripcion" class="java.lang.String"/>
+	<field name="subtotal" class="java.lang.Long"/>
+	<variable name="total_1" class="java.lang.Long" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="96" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d2809069-f236-485b-8c4e-70b14f0b4e7e" x="296" y="11" width="280" height="20"/>
+				<textElement>
+					<font size="15" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[UNION TEMPORAL  DESARROLLO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5fcd92e7-56f6-4fbb-b36f-45f51223c590" x="273" y="31" width="319" height="20"/>
+				<textElement>
+					<font size="15" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[VIAL DEL VALLE DEL CAUCA Y CAUCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7e82e095-a504-4cc0-818a-9b01bda33537" x="363" y="51" width="134" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT:830.059.605-1]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="0cd0ab74-f91d-4310-844d-e1d59e258fd7" x="0" y="0" width="109" height="82"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="51" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="efffac4c-cc33-4869-a27c-732a3a2c5cdd" x="0" y="0" width="802" height="49" backcolor="#23E379"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d461017f-e409-44fa-9041-9e4b4f7f1486" x="12" y="12" width="97" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recibo de Caja]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="97b74356-b9fa-4303-806b-099b7beca836" x="109" y="12" width="74" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2fe09a8a-d525-44d6-9969-40089b9b22f5" x="183" y="12" width="101" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0b1113bc-4300-47f5-b834-b82885df93d2" x="296" y="12" width="105" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Inicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a1b557e4-3d2f-4781-9efa-b0bc30ea2b43" x="407" y="12" width="76" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="aa953a46-bada-435e-98d0-5629c7aaa39e" x="483" y="12" width="67" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a1c212b3-81ed-4c94-8a84-8110f21b42f2" x="550" y="12" width="88" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Eje Adicional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3fa30191-f9b5-498c-b905-d7f23279835a" x="638" y="12" width="78" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Forma Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b8ad9b52-5e04-43f6-a3f9-51089fb47808" x="716" y="12" width="73" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubTotal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="29" splitType="Stretch">
+			<textField>
+				<reportElement uuid="83a5c1dc-9c7e-4f1b-9d84-2682cb94dc90" x="12" y="0" width="97" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ven_recibo_caja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cf263df1-dc14-4272-9fbf-2814c30602ea" x="109" y="0" width="74" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="da21d9ca-6e7f-4953-9ce9-075712648f76" x="183" y="0" width="101" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ven_fecha_hora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2eafb4a1-8c8d-47e9-bac2-75bbb3bc4ddf" x="296" y="0" width="91" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{dv_serial_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b9f2cd8c-1c8a-41c9-be41-ed91cf854bef" x="407" y="0" width="76" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{dv_serial_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a0fc97b9-a725-4307-8f46-32b0cc209d0a" x="483" y="0" width="67" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cat_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ccd63519-82d3-4751-82fd-7f703b39e5c5" x="550" y="0" width="88" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{tea_nombre}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="a4d5b91b-fc8e-48ee-83d2-28209e70058c" x="0" y="24" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="d655f4d6-8f3a-452f-9464-9f4d6bcf39a7" x="729" y="0" width="73" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8e0706d7-1867-4bfc-aee7-cd45a5344c0c" x="638" y="0" width="91" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fp_descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="47d25a52-e670-4fda-8ea9-3ead09de27fa" x="534" y="28" width="155" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL VENTAS: $]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="f63f6a2c-8fec-4b8e-be76-d6b92fc99838" x="689" y="28" width="100" height="20" forecolor="#501BE4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+</jasperReport>

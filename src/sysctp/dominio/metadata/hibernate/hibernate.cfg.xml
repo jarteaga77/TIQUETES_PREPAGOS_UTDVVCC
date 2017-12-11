@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!--
+    Document   : hibernate.cfg.xml.xml
+    Created on : 24 de abril de 2011, 05:05 PM
+    Author     : james
+    Description:
+        Purpose of the document follows.
+-->
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://192.168.1.28:5432/SistemaTiquetesPrepagos</property>
+    <property name="hibernate.connection.username">postgres</property>
+    <property name="hibernate.connection.password">postgres</property>
+    <!-- El dialecto SQL a usar -->
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <!-- Configuracion del pool de conexiones -->
+    <property name="hibernate.connection.pool_size">3</property>
+    <!-- Habilita la administración automatica de contextos de sesion en hibernate -->
+    <property name="hibernate.current_session_context_class">thread</property>
+    <!-- Deshabilita el cache de segundo nivel -->
+    <property name="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+    <!-- muestra las sentencia sql ejecutadas -->
+    <property name="hibernate.show_sql">true</property>
+    <!-- Los archivos de mapeo -->
+    <mapping class="sysctp.dominio.clientes.Cliente"/>
+    <mapping class="sysctp.dominio.inventario.Categoria"/>
+    <mapping class="sysctp.dominio.inventario.TipoEjeAdicional"/>
+    <mapping class="sysctp.dominio.inventario.TipoTiquetePrepago"/>
+    <mapping class="sysctp.dominio.inventario.EspecificacionTiquetePrepago"/>
+    <mapping class="sysctp.dominio.ventas.CuentaBancaria"/>
+    <mapping class="sysctp.dominio.ventas.FormaDePago"/>
+    <mapping class="sysctp.dominio.ventas.Pago"/>
+    <mapping class="sysctp.dominio.ventas.LineaDeVenta"/>
+    <mapping class="sysctp.dominio.ventas.Venta"/>
+  </session-factory>
+</hibernate-configuration>

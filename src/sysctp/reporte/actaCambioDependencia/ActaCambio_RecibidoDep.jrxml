@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ActaCambio_TablaRecibidos" printOrder="Horizontal" pageWidth="555" pageHeight="595" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="63e01915-8ff5-41d2-896d-a3220982e924">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="acta" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT (cat.cat_nombre ||''|| tea.tea_nombre) AS descripcion,
+(dtr.consecutivo_final - dtr.consecutivo_inicial +1) as cantidad,
+etp.etp_precio,dtr.consecutivo_inicial,dtr.consecutivo_final,
+(dtr.consecutivo_final - dtr.consecutivo_inicial +1  )*(etp.etp_precio) AS subtotal 
+FROM
+ventas.detalle_recibidos dtr JOIN inventario.especificacion_tiquete_prepago etp ON dtr.id_especificacion_tiquete=etp.etp_id 
+JOIN inventario.categoria cat ON etp.cat_id=cat.cat_id 
+JOIN inventario.tipo_eje_adicional tea ON  tea.tea_id=etp.tea_id
+
+WHERE dtr.id_actacambio=$P{acta}
+
+GROUP BY cat.cat_nombre,tea.tea_nombre,dtr.consecutivo_final,dtr.consecutivo_inicial,etp.etp_precio,dtr.id_detalle_recibido
+ORDER BY dtr.id_detalle_recibido]]>
+	</queryString>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Long"/>
+	<field name="etp_precio" class="java.lang.Long"/>
+	<field name="consecutivo_inicial" class="java.lang.Long"/>
+	<field name="consecutivo_final" class="java.lang.Long"/>
+	<field name="subtotal" class="java.lang.Long"/>
+	<variable name="totalrecibidos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="d7d02e21-bcea-43b1-8693-77d6ccd20a36" x="0" y="0" width="555" height="15" backcolor="#D0E8EC"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e9608621-97c0-4b1a-baf5-7335d7c3708d" x="13" y="0" width="62" height="15"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec9bab63-8711-4886-85e7-ec5b1b684025" x="216" y="0" width="55" height="15"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b4554b6-124c-481f-af1d-aef3bd8bc54b" x="271" y="0" width="70" height="15"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vlor.Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="faa18a12-2806-42dc-a962-298023ff28af" x="347" y="0" width="63" height="15"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4e74d11f-18c3-4593-a875-c44b997b557c" x="415" y="0" width="60" height="15"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4461e020-baed-4875-9742-d885a871d85b" x="475" y="0" width="50" height="15"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubTotal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="09a0a3f5-9c28-48e2-ad84-37112a2277df" x="14" y="0" width="200" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1adb0ad7-0a60-490e-8369-a517fbcbc942" x="216" y="0" width="43" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="d0da3f36-7470-44f2-a0f9-66ec806294fb" x="271" y="0" width="76" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{etp_precio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="2ab369a0-a554-49c6-b089-8d28894e7980" x="415" y="0" width="60" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consecutivo_final}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="4b8363db-f458-432e-bd48-d897d2d7ca6f" x="475" y="0" width="65" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="b15a2364-cc37-4cbc-93ea-7e02401687d7" x="0" y="13" width="555" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="075d2348-9322-436e-a1e4-8e9dc7ca61b8" x="347" y="0" width="68" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consecutivo_inicial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="16">
+			<rectangle>
+				<reportElement uuid="f7343c20-1bb9-43a4-92b7-5d88c23b5246" x="0" y="0" width="555" height="15"/>
+			</rectangle>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="56e5e157-4059-4c77-b29e-961faf5f47de" x="415" y="0" width="129" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalrecibidos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="11dea1d0-8b74-4df8-8714-5f3a5d5c3c03" x="323" y="0" width="92" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Recibido:$]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

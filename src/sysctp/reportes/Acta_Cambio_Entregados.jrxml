@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Acta_Cambio_Entregados" printOrder="Horizontal" pageWidth="489" pageHeight="799" columnWidth="489" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d77c25fd-f52b-477b-a3e9-d505195cca94">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="acta" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT (cat.cat_nombre ||''|| tea.tea_nombre ||' año '||etp.etp_anio) AS descripcion,
+(dte.consecutivo_final - dte.consecutivo_inicial +1) as cantidad,
+etp.etp_precio,dte.consecutivo_inicial,dte.consecutivo_final,
+(dte.consecutivo_final - dte.consecutivo_inicial + 1 )*(etp.etp_precio) AS subtotal
+FROM
+ventas.detalle_entregados dte JOIN inventario.especificacion_tiquete_prepago etp ON dte.id_esp_tiquete=etp.etp_id 
+JOIN inventario.categoria cat ON etp.cat_id=cat.cat_id 
+JOIN inventario.tipo_eje_adicional tea ON  tea.tea_id=etp.tea_id
+
+WHERE dte.id_actacambio=$P{acta}
+
+GROUP BY cat.cat_nombre,tea.tea_nombre,dte.consecutivo_final,dte.consecutivo_inicial,etp.etp_precio,dte.id_detalle_entregado,etp.etp_anio
+ORDER BY dte.id_detalle_entregado]]>
+	</queryString>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Long"/>
+	<field name="etp_precio" class="java.lang.Long"/>
+	<field name="consecutivo_inicial" class="java.lang.Long"/>
+	<field name="consecutivo_final" class="java.lang.Long"/>
+	<field name="subtotal" class="java.lang.Long"/>
+	<variable name="totalEntregados" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="dd1dbcfb-7bfa-41ee-9034-56b803bb2f56" x="3" y="-1" width="486" height="13" backcolor="#CDE7E2"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="7548409c-e734-4170-9c25-e757ffb37bf3" x="14" y="0" width="67" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2b40bb99-301e-4150-af53-ae617dfbee8f" x="171" y="0" width="42" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d90c9f03-965b-43f8-a752-5f41e6dcc4ab" x="213" y="0" width="66" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vlor.Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dd2d579e-6c92-4a3e-841a-7455f6615618" x="279" y="0" width="64" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9bddb85c-0fed-49c7-a7dd-c64c5deefbb3" x="343" y="0" width="58" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="44ea487a-c4fd-403d-b90c-abaa0496f248" x="407" y="-1" width="54" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SubTotal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3b8560af-0d5c-40cd-b371-b957c0d1cd7d" x="14" y="1" width="147" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement uuid="793d9fdf-9161-4971-9555-5ce4394a389d" x="213" y="1" width="66" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{etp_precio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="2ea93e2a-7798-4c30-b990-8430b30a6802" x="172" y="1" width="35" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="bd437385-50d0-4839-8335-206943289738" x="343" y="0" width="64" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consecutivo_final}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8332649a-1ec3-46fe-a6cd-0db8be356aec" x="279" y="1" width="58" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consecutivo_inicial}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="¤ #,##0.00">
+				<reportElement uuid="3d7efebb-18c0-421a-b4a1-e5f34bbe02ea" x="407" y="0" width="82" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="13">
+			<rectangle>
+				<reportElement uuid="01db6b9d-b0ab-4842-89a9-5c48573a5c3b" x="0" y="0" width="486" height="13"/>
+			</rectangle>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="85add9be-6e75-4ee8-a771-c2de9b90b933" x="364" y="0" width="123" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalEntregados}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="16860e10-c06f-4799-87ba-880a092c6ebb" x="265" y="1" width="99" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Entregado: $]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

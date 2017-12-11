@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b4aa7935-bbfa-4ac6-86eb-281a1c3e9c7b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_arqueo" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[SELECT fecha_hora_arqueo,total_sistema,total_vendidos,total_inhabilitados,total_disponibles,total_remisionados FROM controles_arqueos.arqueo_general
+WHERE id_arqueo_general=$P{id_arqueo}]]>
+	</queryString>
+	<field name="fecha_hora_arqueo" class="java.sql.Timestamp"/>
+	<field name="total_sistema" class="java.lang.Long"/>
+	<field name="total_vendidos" class="java.lang.Long"/>
+	<field name="total_inhabilitados" class="java.lang.Long"/>
+	<field name="total_disponibles" class="java.lang.Long"/>
+	<field name="total_remisionados" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<image>
+				<reportElement uuid="e6a5c235-f3cf-4e43-a3c2-b18acf22e424" x="0" y="0" width="555" height="50"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="c1991b3d-54de-4521-8bb8-57d7ca20bfe6" x="131" y="50" width="277" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARQUEO GENERAL TIQUETES PREPAGOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="da479db3-c765-4969-b7a6-c61d1fc9ff49" x="0" y="72" width="88" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha de Impresión]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement uuid="4b832274-9a44-4697-881e-faa9f009d9bc" x="88" y="72" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<summary>
+		<band height="151" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c55f4db6-f462-4c0d-879c-f8a9494554eb" x="70" y="1" width="128" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA Y HORA ARQUEO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c122cce4-b6bc-432e-8e0a-f6c93c63530a" x="70" y="33" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL SISTEMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5fc7d7ea-f4c6-426d-9528-e56d25a89a1f" x="70" y="53" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL VENDIDOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d3894257-299d-4f39-b974-a3b4f298e984" x="70" y="78" width="118" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL INHABILITADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bd7b5df5-dc83-4295-b8de-fe252dae4fd7" x="70" y="98" width="118" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL DISPONIBLES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80caeb1d-9c75-4cf9-9d17-fca926e2a9da" x="70" y="139" width="118" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL REMISIONADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="48522c2d-96a8-4685-be9b-b2b1c3c0d93f" x="21" y="110" width="495" height="29"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOTA: Para determinar el total neto de TIQUETES VENDIDOS se debe hacer una resta entre EL TOTAL DE TIQUETES VENDIDOS Y EL TOTAL DE TIQUETES REMISIONADOS.]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9583e514-10d4-408a-9957-4f843f0ee43d" x="308" y="1" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_hora_arqueo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="e722978f-92e7-4ef7-86cd-02d9dc4995e7" x="308" y="33" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_sistema}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="0718de57-c8db-4cb3-b801-238d201406ea" x="308" y="53" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_vendidos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="8630ca5a-ca45-4114-9de4-fba65b12cc11" x="308" y="78" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_inhabilitados}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="eb87832f-8c20-4f7a-9167-7a11564119aa" x="308" y="98" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_disponibles}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="6ed23bd5-afcb-4b2d-9919-259dd12a1e3c" x="308" y="139" width="100" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_remisionados}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

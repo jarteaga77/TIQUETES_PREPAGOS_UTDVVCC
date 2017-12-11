@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7133eb9b-5afa-4319-9a51-adf565b809d4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[SELECT cli_nit,
+cli_razon_social,
+cli_direccion,cli_telefono_1,
+cli_telefono_2,cli_fax,cli_email, cli_ciudad FROM clientes.cliente]]>
+	</queryString>
+	<field name="cli_nit" class="java.lang.Long"/>
+	<field name="cli_razon_social" class="java.lang.String"/>
+	<field name="cli_direccion" class="java.lang.String"/>
+	<field name="cli_telefono_1" class="java.lang.String"/>
+	<field name="cli_telefono_2" class="java.lang.String"/>
+	<field name="cli_fax" class="java.lang.String"/>
+	<field name="cli_email" class="java.lang.String"/>
+	<field name="cli_ciudad" class="java.lang.String"/>
+	<title>
+		<band height="93" splitType="Stretch">
+			<image>
+				<reportElement uuid="3a21f561-8a7e-4457-bee2-aee086b4d9d0" x="0" y="0" width="117" height="79"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="9df0845e-804d-4992-89ae-1da3a5b9242f" x="364" y="52" width="133" height="20"/>
+				<textElement>
+					<font size="11" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT:830.059.605-1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e1175478-0107-4303-ae9d-3f7fb23a1cff" x="277" y="32" width="301" height="20"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[VIAL DEL VALLE DE CAUCA Y CAUCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9b30a88c-3983-4fe7-afe0-09ade2f0c45a" x="292" y="12" width="274" height="20"/>
+				<textElement>
+					<font size="14" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[UNION TEMPORAL DESARROLLLO ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="8edc44ee-20c3-48fc-812c-8506a599a1bb" x="0" y="0" width="802" height="35" backcolor="#1E6ACF"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="7d976d42-639b-4f57-b885-ea361d03a863" x="376" y="15" width="82" height="20" forecolor="#FAF3F3"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTES]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="3675ac99-f60d-4e4b-aa5b-1ea272f8be7e" x="0" y="0" width="802" height="40" backcolor="#90F6A7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="ec8d7ba6-1de6-48ba-ac3d-87db53a86702" x="12" y="10" width="67" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7ea77dcd-d56f-417a-8f92-de48340a1bcc" x="81" y="10" width="92" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Razón Social]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="07a50092-6efa-46ee-b793-a94beffe14e1" x="203" y="10" width="79" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0f0d5574-3b9a-449e-b15c-42e5f1a9e5a7" x="420" y="10" width="42" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tel 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7c6dcbe5-4b48-408e-ba3a-773404b682d1" x="475" y="10" width="41" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tel 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="157ca0a7-9ca8-4e45-b515-2cdb7110e001" x="535" y="10" width="43" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fax]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bd11abe4-2210-4bed-85b7-8ce2f77b5966" x="694" y="10" width="98" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-mail / Web]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="30678720-69e8-4cb7-b9a5-a07adf4f530b" x="332" y="10" width="88" height="20"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ciudad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement uuid="3a7bdfd1-cd43-4c26-8f49-ad5c48414bcc" x="2" y="0" width="79" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9a58eea4-82d2-46d8-9764-0907e654924d" x="79" y="0" width="124" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_razon_social}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ccff97e8-b15d-46e3-a4b7-90bca4358047" x="203" y="0" width="129" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1e5db01c-cba9-43a5-b267-33604b3d1b19" x="420" y="0" width="55" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_telefono_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a44ba751-2c72-4d75-99a5-c0db28335d51" x="475" y="0" width="60" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_telefono_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="71f6e7ba-13ed-4c34-8cf9-01123369ddd9" x="535" y="0" width="79" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_fax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3afcd1b5-1086-4fc6-b0ea-b5aaafea25d3" x="614" y="0" width="188" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_email}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="90133bd4-60d7-4e7c-8b15-7417e5c09784" x="0" y="20" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="440bb4e3-375c-4c83-a570-d89c1daebad2" x="332" y="0" width="73" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cli_ciudad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

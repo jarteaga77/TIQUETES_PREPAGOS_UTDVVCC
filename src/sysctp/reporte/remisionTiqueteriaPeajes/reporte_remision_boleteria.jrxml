@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="b75355a7-c7cd-4549-83c7-141936b85b98">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="remision" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="encabezado" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[SELECT rem.id_remision_peaje,rem.fecha_remision,rem.id_peaje,rem.observacion,to_char(rem.total_remision,'999G999G999G999D99')as total,
+pe.estacion_peaje,dr.dr_serial1,dr_serial2, cat.cat_nombre || '+' || tea.tea_nombre AS descripcion, 
+dr.dr_serial1, dr.dr_serial2, SUM(dr.dr_serial2-dr.dr_serial1 + 1) AS cantidad, to_char(etp.etp_precio,'999G999G999G999D99')as precio
+FROM ventas.remision_peaje rem JOIN dependencias.peajes pe ON pe.codigo_peaje=rem.id_peaje
+JOIN ventas.detalle_remision dr ON  dr.id_remision=rem.id_remision_peaje
+JOIN inventario.especificacion_tiquete_prepago etp ON dr.id_etp=etp.etp_id 
+JOIN inventario.tipo_eje_adicional tea ON tea.tea_id=etp.tea_id 
+JOIN inventario.categoria cat ON etp.cat_id=cat.cat_id 
+WHERE id_remision_peaje=$P{remision}
+GROUP BY rem.id_remision_peaje,rem.fecha_remision,rem.id_peaje,rem.observacion,rem.total_remision,pe.estacion_peaje,
+dr.dr_serial1,dr_serial2,cat.cat_nombre,tea.tea_nombre,etp.etp_precio,dr.id_det_remision
+ORDER BY
+dr.id_det_remision]]>
+	</queryString>
+	<field name="id_remision_peaje" class="java.lang.Long"/>
+	<field name="fecha_remision" class="java.sql.Timestamp"/>
+	<field name="id_peaje" class="java.lang.Integer"/>
+	<field name="observacion" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="estacion_peaje" class="java.lang.String"/>
+	<field name="dr_serial1" class="java.lang.Long"/>
+	<field name="dr_serial2" class="java.lang.Long"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="precio" class="java.lang.String"/>
+	<variable name="cantidad" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="140" splitType="Stretch">
+			<image>
+				<reportElement uuid="41b53c36-de3d-4e67-b032-19555e705961" x="0" y="0" width="483" height="58"/>
+				<imageExpression><![CDATA[$P{encabezado}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="2cc942ec-b737-49dd-b9f3-622931233119" x="206" y="58" width="98" height="15"/>
+				<textElement/>
+				<text><![CDATA[Nit: 830.059.605-1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="33617d04-8fe3-4477-9f7e-91535a72719a" x="126" y="73" width="262" height="12"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REMISIÓN BOLETERIA A ESTACIONES DE PEAJE]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="98703057-b50e-470d-8f89-9a2173532bd1" x="0" y="105" width="483" height="30"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="22d4f558-2a31-4451-9fb7-c4adb55b027c" x="0" y="105" width="80" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha de Envio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="8a23378e-6636-4050-971b-327c69a5f3ad" x="80" y="105" width="113" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_remision}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="11bc220e-4632-4538-9be0-8a38223942bf" x="256" y="105" width="132" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remisión de Boleteria N°:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="3e8a46fd-6ad7-43d6-8d6e-1705a6877c0b" x="388" y="103" width="95" height="15"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_remision_peaje}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1ef10be5-ea5d-4625-8ea8-47ec6c6b96f3" x="0" y="120" width="94" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Estación de Peaje:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="a6e04e5a-e69b-4d7f-8d0d-5061650394fb" x="0" y="118" width="483" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="e92cdd0e-ab00-4b3a-9ad8-ae6bcc6c9372" x="94" y="120" width="160" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estacion_peaje}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="6e994c91-fab4-4e7c-9cb1-3c62d7e1a376" x="258" y="119" width="100" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Código Estación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e6af5302-514b-4da7-8c33-63ee92b55728" x="358" y="118" width="100" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_peaje}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="7d68f48d-3624-48ee-a5d4-6380e3f8bcb4" x="0" y="0" width="483" height="15" backcolor="#D3E2E2"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="5892ad0a-4940-41af-984b-c7cad38c5838" x="20" y="0" width="74" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d3192605-c301-404a-b266-42c8ffad92fc" x="177" y="0" width="77" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f31213cd-1f8a-4381-85bc-2a0e47c6891d" x="388" y="0" width="79" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vlor. Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fb8a3dd2-1997-4fc1-a6f9-930db1b0e244" x="254" y="0" width="76" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="970bac45-18e6-4ac3-ac0b-3fbff02ea7a2" x="330" y="0" width="53" height="12"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9db3fb69-9184-4749-af46-4be86643bde3" x="0" y="0" width="176" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="220df0b4-b54a-490a-9fb5-6d7cb41373d4" x="176" y="0" width="77" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dr_serial1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d1888f93-42a9-4575-866f-426b04f2beeb" x="253" y="0" width="77" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dr_serial2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="be6fae15-b43e-4346-9be5-0352e2e64176" x="327" y="0" width="61" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="bf5b972e-ef62-4bda-995f-d923a94d1c62" x="0" y="15" width="483" height="2"/>
+			</line>
+			<textField>
+				<reportElement uuid="458cd41e-f345-4bfb-8211-9fb285f6ab38" x="388" y="0" width="91" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="135" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="8e681ae9-780f-4afe-aa28-2411ac2c13b0" x="0" y="0" width="483" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1412c6ff-4c64-421b-88d7-35e8afa8d663" x="243" y="0" width="100" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Remisión: $]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="4da81e1f-d400-4215-8613-386d2f2c9add" x="0" y="29" width="483" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="54f7e427-e24c-411d-bb18-0df1c3a7ed7e" x="0" y="29" width="67" height="15"/>
+				<textElement/>
+				<text><![CDATA[Observación:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="22a8a444-941f-4c1f-a84d-b395264d252e" x="0" y="44" width="483" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="eb796fc7-ac24-4048-810e-8b966992fc44" x="0" y="58" width="206" height="61"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="c6a4e4e4-9e92-4952-988d-186a2d0b5493" x="0" y="58" width="47" height="15"/>
+				<textElement/>
+				<text><![CDATA[Enviado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6a339d55-34ef-4870-9609-d020ba88b056" x="29" y="104" width="130" height="15"/>
+				<textElement/>
+				<text><![CDATA[Aux. Boleteria y Papeleria]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="5d6f98f1-2d7c-4d08-beb5-6d0e75ae4d82" x="0" y="103" width="206" height="1"/>
+			</line>
+			<rectangle>
+				<reportElement uuid="6a263618-a5a9-490d-83b2-55fe92cbefca" x="283" y="58" width="200" height="61"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="15071eb0-20ad-43fa-a0b1-cd441ddba380" x="286" y="59" width="52" height="15"/>
+				<textElement/>
+				<text><![CDATA[Recibido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e29bb75d-fd36-4726-8716-24fadd38d40c" x="361" y="104" width="77" height="15"/>
+				<textElement/>
+				<text><![CDATA[Jefe de Peaje]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="6cf549cb-21eb-477e-a937-f2d6029c4572" x="283" y="74" width="200" height="1"/>
+			</line>
+			<rectangle>
+				<reportElement uuid="fe566758-fdb8-4dad-bf78-b4e81d71217c" x="0" y="119" width="483" height="15"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="baf1326a-1260-43d8-b46d-bcf141606fcb" x="94" y="119" width="304" height="15"/>
+				<textElement/>
+				<text><![CDATA[FAVOR DEVOLVER COPIA , FIRMADA SELLADA Y FECHADA]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="58512163-cf23-42e3-a260-bf6fed4ee68d" x="343" y="0" width="140" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8460cdc2-aba8-4435-8dd5-a57af0770171" x="243" y="15" width="78" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Cantidad:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b082fa65-2094-48da-ab6b-6bafa858fa56" x="343" y="15" width="100" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="5d6f98f1-2d7c-4d08-beb5-6d0e75ae4d82" x="0" y="73" width="206" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="6cf549cb-21eb-477e-a937-f2d6029c4572" x="283" y="102" width="200" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

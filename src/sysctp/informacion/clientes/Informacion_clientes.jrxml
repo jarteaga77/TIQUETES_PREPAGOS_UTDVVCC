@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="786" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="17464bfc-6e6b-44ae-9df5-86be5fac73ff">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logo" class="java.io.InputStream">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT id_cliente_sede,cli.cli_nit,sede_descripcion,cli.cli_direccion,cli_telefono_1,cli_telefono_2,cli_fax,muni.ciu_descripcion,
+cli_email 
+
+FROM clientes.sedes_clientes cli JOIN municipio muni ON muni.ciu_id=cli.id_clie_ciudad 
+
+ORDER BY sede_descripcion ASC
+                       ]]>
+	</queryString>
+	<field name="id_cliente_sede" class="java.lang.Long"/>
+	<field name="cli_nit" class="java.lang.Long"/>
+	<field name="sede_descripcion" class="java.lang.String"/>
+	<field name="cli_direccion" class="java.lang.String"/>
+	<field name="cli_telefono_1" class="java.lang.String"/>
+	<field name="cli_telefono_2" class="java.lang.String"/>
+	<field name="cli_fax" class="java.lang.String"/>
+	<field name="ciu_descripcion" class="java.lang.String"/>
+	<field name="cli_email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement uuid="0a48c7dc-faba-48b4-966c-fa55fe553426" x="124" y="0" width="662" height="50"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="793aba7f-e697-46ac-a812-064e4654a0a1" x="269" y="55" width="220" height="12"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTES DE BOLETERIA PREPAGADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="983c45c2-ad46-4fa6-9d45-ae48679c2a35" x="0" y="67" width="786" height="12"/>
+				<textElement/>
+				<text><![CDATA[------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="981474e5-7817-496e-ac9c-1a34c554e43f" x="45" y="0" width="22" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9da722ab-276a-44ba-8ebe-fbb1a3f302ae" x="112" y="0" width="41" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8337cf48-cb91-40eb-aa32-1d44d8dec6a8" x="256" y="0" width="56" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b1d6bd2c-7cfc-4812-a4fc-5272cd339591" x="408" y="0" width="54" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b03ba03c-8b92-4034-878b-ee71d91fac26" x="475" y="0" width="63" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONO 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b98b4f42-0ab6-4259-96c7-f0eb7e26401c" x="538" y="0" width="31" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FAX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="07dd04d1-c126-44b8-9239-ef27f837dc58" x="607" y="0" width="46" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CIUDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2d2fc39f-5bb6-4113-b75b-2d7421076533" x="675" y="0" width="46" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E-MAIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="983c45c2-ad46-4fa6-9d45-ae48679c2a35" x="0" y="12" width="786" height="12"/>
+				<textElement/>
+				<text><![CDATA[------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b7ed7b2d-bc5e-4444-9960-805f64145c15" x="0" y="0" width="28" height="12"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement uuid="719b7c02-4e3c-46c4-a37c-f2ac4f0e5abd" x="45" y="0" width="67" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_nit}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8c133daf-cbb2-4b66-86a1-edebf5f5a425" x="112" y="0" width="134" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sede_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="1fc50b19-28f0-41bc-8ef7-3a7565a5440f" x="256" y="0" width="140" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="92c6c1c6-ff2e-4a76-8b97-86852984077e" x="408" y="0" width="67" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_telefono_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4e9e822f-8ab0-4cb9-97fa-2914a40160f8" x="475" y="0" width="63" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_telefono_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b49f36e0-9938-4b54-8806-ae2368136513" x="538" y="0" width="69" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_fax}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="29ab5484-5d8f-43ee-a2cf-9d188dc38758" x="675" y="0" width="111" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="333624cc-dd2b-4e64-8757-9dc8d9e087ad" x="0" y="0" width="45" height="12"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_cliente_sede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d26f1155-0227-42ed-abf1-9107632d92b0" x="607" y="0" width="68" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ciu_descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

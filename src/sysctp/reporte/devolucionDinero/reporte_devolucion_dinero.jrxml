@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="30b6a14e-a323-4a27-971d-7976473139c5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_devolucion" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT devo.id_devolucion_dinero,devo.fecha, devo.recibo_caja, cli.cli_nit,cli.cli_razon_social, 
+(con.cta_cliente ||'-'||con.banco_cliente ||'-'|| con.tipo_cuenta_cliente)AS cta,(cat.cat_nombre ||'-'|| tea.tea_nombre) As tiquete,
+detalle.serial_inicial, detalle.serial_final, etp.etp_precio,(detalle.serial_final - detalle.serial_inicial +1)*(etp.etp_precio) As subtotal , 
+con.vlor_cosnginado, (detalle.serial_final - detalle.serial_inicial +1) as cantidad
+
+
+FROM
+
+ventas.devolucion_dinero devo JOIN ventas.detalle_devolucion detalle ON detalle.id_devolucion=devo.id_devolucion_dinero	
+JOIN clientes.sedes_clientes sede ON sede.id_cliente_sede=devo.id_sede_cliente
+JOIN clientes.cliente cli ON cli.cli_nit= sede.cli_nit
+JOIN inventario.especificacion_tiquete_prepago etp ON etp.etp_id=detalle.id_etp
+JOIN inventario.categoria cat ON cat.cat_id=etp.cat_id
+JOIN inventario.tipo_eje_adicional tea ON tea.tea_id=etp.tea_id
+JOIN ventas.consignacion con ON con.id_devolucion=devo.id_devolucion_dinero
+
+
+WHERE devo.id_devolucion_dinero=$P{id_devolucion}]]>
+	</queryString>
+	<field name="id_devolucion_dinero" class="java.lang.Long"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="recibo_caja" class="java.lang.Long"/>
+	<field name="cli_nit" class="java.lang.Long"/>
+	<field name="cli_razon_social" class="java.lang.String"/>
+	<field name="cta" class="java.lang.String"/>
+	<field name="tiquete" class="java.lang.String"/>
+	<field name="serial_inicial" class="java.lang.Long"/>
+	<field name="serial_final" class="java.lang.Long"/>
+	<field name="etp_precio" class="java.lang.Long"/>
+	<field name="subtotal" class="java.lang.Long"/>
+	<field name="vlor_cosnginado" class="java.lang.Long"/>
+	<field name="cantidad" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="145" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="6e2d9e4c-b56a-4413-9339-d17534bdf426" x="0" y="76" width="483" height="64"/>
+			</rectangle>
+			<image>
+				<reportElement uuid="8b3bfb2d-2522-48b5-b7b8-5356e4e47fb3" x="0" y="1" width="483" height="50"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="e44f883e-f9db-4a48-9a2f-93cd46fc7bd6" x="46" y="76" width="244" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c747d899-11fb-4760-a372-fcf0fe3f86dc" x="0" y="76" width="46" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1f31b46a-1943-485e-9aa5-7484f2850adc" x="73" y="104" width="100" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_devolucion_dinero}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f4e52b95-34aa-46fc-b31e-2b4610f0728b" x="0" y="104" width="73" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Devolución:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="35be5248-0758-408e-91dc-fa9fe52aec29" x="364" y="104" width="116" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recibo_caja}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e816591f-1ffb-48b5-b7c8-151b03b8e4be" x="280" y="104" width="84" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Recibo de Caja:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="800e8373-2863-4730-9445-8e3c451c5c5b" x="73" y="116" width="100" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_nit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f3a89378-bda0-455f-95c9-002c87a88821" x="0" y="116" width="25" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[NIT:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="3fc5cbf8-6c23-4ece-80eb-2129b514c3f0" x="324" y="116" width="156" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_razon_social}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="13946757-2bba-4596-9448-574a1e5c541c" x="280" y="116" width="44" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9e20a2d8-86e9-43c3-89d1-c0a6a1e80c1e" x="0" y="128" width="46" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cuenta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="84399351-f1cf-4694-9c86-92e0285d41cd" x="73" y="128" width="207" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="9a704fc2-9b0d-4d98-8dc9-84b29e782cfa" x="0" y="0" width="56" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8b1f042a-9878-4cc5-b8ef-8b1eba11dcdb" x="130" y="0" width="62" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6de855f9-0118-4f44-ba93-4e7430afb2e0" x="192" y="0" width="53" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5a012fce-a1dd-481a-9a86-07fad9321bba" x="313" y="0" width="58" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Vlor. Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6764081f-2c9d-450f-a6d3-a64b856f4d07" x="381" y="0" width="36" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="61624e4b-0236-4b8a-9739-5615993aaf64" x="0" y="12" width="483" height="12"/>
+				<textElement/>
+				<text><![CDATA[-----------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ced9ab0f-13ad-4395-8cb9-171a0666c3a1" x="255" y="0" width="47" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="ca700150-e5c9-42a1-b688-0cd5c317bf61" x="0" y="0" width="130" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tiquete}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9661bb0a-4acc-4c12-9e3c-cff3d9a2596b" x="130" y="0" width="62" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serial_inicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a0df2347-73f8-483b-a495-8fb9ee10f844" x="192" y="0" width="53" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serial_final}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="cf0a9d00-bdfa-4efe-b75d-6b70d17650f9" x="313" y="0" width="58" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{etp_precio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="2746b249-eea0-4df8-8c02-87ace9acc469" x="381" y="0" width="99" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d20e3eab-8593-4355-9654-eb735e8ebe79" x="257" y="0" width="45" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="24" splitType="Stretch">
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="d97329bb-59b3-4507-a83e-55442ccab60b" x="364" y="10" width="116" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlor_cosnginado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3eaa9815-28bd-4654-be8b-561b039313cc" x="239" y="10" width="132" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor Total Consignado: $]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

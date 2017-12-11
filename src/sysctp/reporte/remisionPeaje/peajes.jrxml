@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="802" whenNoDataType="NoDataSection" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="aa8b54a1-b856-408a-9ee2-eb56be986e4c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="peaje" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT rem.id_remision_peaje,rem.fecha_remision,dr.dr_serial1,dr.dr_serial2,(cat.cat_nombre ||'-'||tea.tea_nombre ||'año '|| etp.etp_anio) AS descripcion,
+(dr.dr_serial2-dr.dr_serial1 + 1)*(etp.etp_precio)AS subtotal,rem.observacion,pe.estacion_peaje,
+(dr.dr_serial2-dr.dr_serial1 + 1)AS cantidad,pe.codigo_peaje
+
+FROM 
+
+ventas.remision_peaje rem JOIN ventas.detalle_remision dr ON rem.id_remision_peaje=dr.id_remision
+JOIN inventario.especificacion_tiquete_prepago etp ON etp.etp_id=dr.id_etp 
+JOIN inventario.categoria cat ON cat.cat_id=etp.cat_id
+JOIN inventario.tipo_eje_adicional tea ON tea.tea_id=etp.tea_id
+JOIN dependencias.peajes  pe ON rem.id_peaje=pe.codigo_peaje
+
+WHERE pe.codigo_peaje=$P{peaje}
+  ]]>
+	</queryString>
+	<field name="id_remision_peaje" class="java.lang.Long"/>
+	<field name="fecha_remision" class="java.sql.Timestamp"/>
+	<field name="dr_serial1" class="java.lang.Long"/>
+	<field name="dr_serial2" class="java.lang.Long"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="subtotal" class="java.lang.Long"/>
+	<field name="observacion" class="java.lang.String"/>
+	<field name="estacion_peaje" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Long"/>
+	<field name="codigo_peaje" class="java.lang.Integer"/>
+	<variable name="cantidad" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<variable name="total" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="14">
+			<staticText>
+				<reportElement uuid="d8978173-7f94-47f5-ac2f-83625d44a7fc" x="0" y="0" width="19" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c78b63e7-bf46-4a71-968d-2a65ac3d03ca" x="32" y="0" width="32" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="18de313e-2484-47d5-b010-73ae7b97eafc" x="89" y="0" width="55" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="692c4bbf-79fe-4d6e-8fb6-53e1626f0f47" x="144" y="0" width="55" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ab359358-a4fd-4391-8ce2-33fc79f92c75" x="199" y="0" width="38" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="40de2957-7156-4e08-af9c-d8de3c05ae71" x="238" y="0" width="53" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80d5fa00-ba11-4ee5-8bd4-f4d69647b88e" x="474" y="0" width="35" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7c7684e6-b3d1-41ac-9554-774ae3f01b79" x="0" y="0" width="32" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_remision_peaje}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2b6d84f4-58cc-4805-9295-5c66ea542918" x="89" y="0" width="55" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dr_serial1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a74ae92a-7b42-4421-b4e2-dda98873a021" x="199" y="0" width="39" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="684f6f80-f113-42fb-95e2-1e595f0ac538" x="238" y="0" width="236" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f8e753e5-b34b-46ac-9712-be1cd937861c" x="474" y="0" width="81" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="66058f06-2e23-4176-a132-80bc8f0c2da7" x="144" y="0" width="56" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dr_serial2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ab794122-3ff4-4488-9e45-72800f9b1b06" x="32" y="0" width="57" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_remision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="14">
+			<staticText>
+				<reportElement uuid="0a198c81-522c-4b6c-9a4e-d0ecc18ac5c2" x="428" y="0" width="46" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total: $]]></text>
+			</staticText>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="bc7bb26d-5922-4761-8327-4779c12cceff" x="474" y="0" width="80" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a0b98732-fd23-415b-a039-f2990619912f" x="117" y="0" width="82" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Cantidad:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="16789c18-dd01-4662-9c09-af5f5988a8e0" x="200" y="0" width="57" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

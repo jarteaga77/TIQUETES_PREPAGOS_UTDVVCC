@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0f013787-5a79-44bc-91ff-f4d966a77c07">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT SUM(dr_serial2-dr_serial1 +1)AS total_remision FROM ventas.detalle_remision]]>
+	</queryString>
+	<field name="total_remision" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="48522c2d-96a8-4685-be9b-b2b1c3c0d93f" x="0" y="0" width="495" height="29"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOTA: Para determinar el total neto de TIQUETES VENDIDOS se debe hacer una resta entre EL TOTAL DE TIQUETES VENDIDOS Y EL TOTAL DE TIQUETES REMISIONADOS.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9c87b6a8-b3fe-46b0-93a3-c15dac860699" x="41" y="39" width="185" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<text><![CDATA[TOTAL TIQUETES REMISIONADOS:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement uuid="d6271d42-561a-4266-b9ab-432593bf0e69" x="250" y="39" width="100" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_remision}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

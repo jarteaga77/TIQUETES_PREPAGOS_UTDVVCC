@@ -1,0 +1,89 @@
+
+package sysctp.dominio.ventas;
+
+import java.util.Date;
+
+/**
+ *
+ * @author jarteaga
+ */
+public class CambioTiqueteDependencias 
+{
+    
+    
+    private Date fecha;
+    private int dependencia;
+    private String observaciones;
+    private int id_usuario;
+     
+   //Datos de la persona que recibe el acta.
+    private String nombre;
+    private String apellido;   
+    private long cedula;
+    
+   
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public long getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(long cedula) {
+        this.cedula = cedula;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
+    public int getDependencia() {
+        return dependencia;
+    }
+
+    public void setDependencia(int dependencia) {
+        this.dependencia = dependencia;
+    }
+
+  
+    
+ 
+    
+    
+  
+}

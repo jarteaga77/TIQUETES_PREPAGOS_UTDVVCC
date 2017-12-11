@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="1b033bd4-d953-4610-8508-ec47a784d693">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="33"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/jarteaga/Documentos/Sistema Prepagos/iteracion 11/implementacion/Sistema Control Tiquetes Prepago/src/sysctp/reporte/arqueoGeneral/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="anulados" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="disponibles" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="remision" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vendidos" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT COUNT(conse_estado)AS disponibles FROM inventario.consecutivos]]>
+	</queryString>
+	<field name="disponibles" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="117" splitType="Stretch">
+			<image>
+				<reportElement uuid="4c7b97c1-a731-49d3-af6f-5a0371cf7555" x="0" y="0" width="483" height="50"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="c1991b3d-54de-4521-8bb8-57d7ca20bfe6" x="117" y="61" width="277" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ARQUEO GENERAL TIQUETES PREPAGOS]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement uuid="2ad41a8f-1174-4476-b4eb-25882e1816fd" x="117" y="89" width="151" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="aceb146b-0f95-4664-a9a6-669fe1258fb2" x="0" y="89" width="117" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<text><![CDATA[Fecha-Hora Generación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="701548a3-bbee-4642-9a66-9a285f1141ac" x="0" y="103" width="483" height="12"/>
+				<textElement/>
+				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="701548a3-bbee-4642-9a66-9a285f1141ac" x="0" y="75" width="483" height="12"/>
+				<textElement/>
+				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="701548a3-bbee-4642-9a66-9a285f1141ac" x="0" y="50" width="483" height="12"/>
+				<textElement/>
+				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="179" splitType="Stretch">
+			<textField pattern="#,##0">
+				<reportElement uuid="a7fb2eee-f48e-4148-ac57-5711762ff99e" x="242" y="13" width="100" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disponibles}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a6c5c3ba-7697-45bc-b369-5163d90744e4" x="44" y="13" width="91" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<text><![CDATA[TOTAL SISTEMA:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="ee8a6802-e92f-4f5f-bc2b-7579c2cde974" x="44" y="41" width="439" height="27"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{vendidos}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="5589f458-3e7d-4889-96c8-8d4af48b37bb" x="44" y="68" width="439" height="30"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{anulados}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="1d1cdb55-1b29-4ed3-b02f-8734d28ba8cc" x="44" y="98" width="439" height="28"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{disponibles}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="343c3347-a829-432c-9b9b-a377ea5ae02c" x="3" y="138" width="480" height="39"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{remision}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="009a5c29-40e0-4faa-abf4-5699a5211678">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="8"/>
+	<parameter name="ven_dep_id" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+ven.ven_dep_fecha,(depe.depe_descripcion ||'-'|| item.item_depen_descrip)AS dependencia,ven.ven_dep_id,to_char(pa.pago_monto,'999G999G999G999D99')AS monto,
+dvd.dvd_serial_1,dvd.dvd_serial_2,to_char(etp.etp_precio,'999G999G999G999D99')AS precio,(cat_nombre ||''||tea.tea_nombre)AS descripcion,to_char(((dvd.dvd_serial_2 - dvd.dvd_serial_1 +1 )*etp.etp_precio),'999G999G999G999D99')as subtotal,(dvd.dvd_serial_2 - dvd.dvd_serial_1 +1 )AS cantidad,item.item_depen_descrip, SUM(dvd.dvd_serial_2 - dvd.dvd_serial_1 + 1)as cantidad_total,ven.ven_dep_obse
+
+FROM
+ventas.venta_dependencia ven JOIN ventas.detalle_venta_dependencia dvd ON ven.ven_dep_id=dvd.ven_dep_id
+JOIN dependencias.item_dependencia item ON ven.item_dependecia=item.id_item_depen
+JOIN dependencias.dependencia depe ON item.id_dependencia=depe.id_dependencia
+JOIN ventas.pago_ven_dep pa ON ven.ven_dep_id = pa.ven_dep_id
+JOIN inventario.especificacion_tiquete_prepago etp ON dvd.etp= etp.etp_id
+JOIN inventario.categoria cat ON etp.cat_id = cat.cat_id
+JOIN inventario.tipo_eje_adicional tea ON etp.tea_id = tea.tea_id
+
+WHERE ven.ven_dep_id=$P{ven_dep_id}
+GROUP BY ven.ven_dep_fecha,depe.depe_descripcion,item.item_depen_descrip,ven.ven_dep_id,pa.pago_monto,dvd.dvd_serial_1,dvd.dvd_serial_2,
+etp.etp_precio,cat_nombre,tea.tea_nombre]]>
+	</queryString>
+	<field name="ven_dep_fecha" class="java.sql.Timestamp"/>
+	<field name="dependencia" class="java.lang.String"/>
+	<field name="ven_dep_id" class="java.lang.Long"/>
+	<field name="monto" class="java.lang.String"/>
+	<field name="dvd_serial_1" class="java.lang.Long"/>
+	<field name="dvd_serial_2" class="java.lang.Long"/>
+	<field name="precio" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="subtotal" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Long"/>
+	<field name="item_depen_descrip" class="java.lang.String"/>
+	<field name="cantidad_total" class="java.math.BigDecimal"/>
+	<field name="ven_dep_obse" class="java.lang.String"/>
+	<variable name="cantidad" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidad}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="109" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="9b9f2008-de95-4341-87f6-ac3e20b48793" x="0" y="62" width="483" height="44"/>
+			</rectangle>
+			<image>
+				<reportElement uuid="e68b8b6f-0058-4f1f-856a-78dbb9bd7832" x="0" y="0" width="483" height="50"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="aceddfe9-fff3-446b-a8a2-8f1adec5c39d" x="138" y="62" width="250" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENTREGA DE PREPAGOS A DEPENDENCIAS]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="b57d62ed-cc63-4e4e-88cd-b3d30aa84080" x="0" y="76" width="483" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="f55f94d3-f908-49c1-b191-d6cdf0a9e0d2" x="0" y="76" width="37" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="301d2894-0ee1-4cd8-a18c-791784ee3691" x="37" y="77" width="143" height="15"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ven_dep_fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="57448bc7-8567-4e81-a467-e5dc9630b681" x="282" y="76" width="67" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Consecutivo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="da257fb2-3e48-415f-85bf-8ce73b5820fb" x="349" y="76" width="126" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ven_dep_id}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="fb0a22d1-e659-4954-b3c6-0c9d13704668" x="0" y="91" width="483" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="c3a1f92f-534d-4ac9-ba6a-40e2f80aa490" x="0" y="92" width="76" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dependencia:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="546dbac5-36fb-42e2-acde-b4afc4bbebe0" x="76" y="92" width="407" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="1d147068-78f0-4f89-b0b2-0afa92be561f" x="0" y="0" width="483" height="14" backcolor="#D6EDE6"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="861e8dc2-1f8d-44d4-8874-bd6311e912bd" x="12" y="0" width="64" height="14"/>
+				<textElement>
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="02acfeea-6402-4eca-affd-21a971f93d55" x="76" y="0" width="62" height="14"/>
+				<textElement>
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e679af25-f9cc-4f92-8d13-b127f1ce124c" x="138" y="0" width="52" height="14"/>
+				<textElement>
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2f09f805-f9f7-484f-9f9b-b14696ecc3f8" x="399" y="0" width="53" height="14"/>
+				<textElement>
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[SubTotal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4a040c3d-4eaa-40c9-a728-28eb48acc1ae" x="190" y="0" width="70" height="14"/>
+				<textElement>
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Vlor.Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c782d9cd-cf4d-46f3-94a9-34ac7a6b070e" x="260" y="0" width="61" height="14"/>
+				<textElement>
+					<font size="8" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="cf0990e0-f7e0-4251-9580-2f98b4d76351" x="11" y="0" width="65" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dvd_serial_1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="2e0e6ed9-0074-430f-a858-ee49e4f3483c" x="76" y="1" width="62" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dvd_serial_2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="539316ad-4b1b-47f7-bea1-8e312a1af89d" x="138" y="1" width="52" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="0297a1ec-8976-4c8c-945d-76a6e6206d7c" x="262" y="1" width="134" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a600d107-fa0a-4ab5-b9f3-202f5479e851" x="190" y="1" width="70" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="8d504620-b3bd-41a2-9e30-96a97d722380" x="396" y="1" width="87" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="141" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="c87bce90-a8cb-4949-bb76-449958f993a5" x="0" y="29" width="483" height="14"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="fd750aa1-fc64-4818-a28a-ab99b9c5b5d8" x="65" y="29" width="418" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ven_dep_obse}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="eb8c310f-8a72-4db8-a1f1-175dde7feb51" x="0" y="29" width="65" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Observación:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="2a7aec86-4b25-4694-af04-4d10dd21389a" x="0" y="0" width="483" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="7911b7c3-9883-4bec-90ef-ea76ef76f1dd" x="302" y="0" width="41" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:$]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="cf3bb11c-9148-44a2-a5fa-091099880ad1" x="0" y="43" width="483" height="96"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="c108d15e-7a37-4d66-8835-09ba1d652249" x="302" y="15" width="97" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Tiquetes:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="303b78d7-063a-44a4-8405-0cbeece9dc34" x="2" y="43" width="35" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Revisó]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="397ced4b-82ae-475d-b469-4ff345d2869f" x="2" y="55" width="481" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="afc02a94-3ee9-4bf3-be02-771a0cac6cfe" x="154" y="43" width="41" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Elabora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0842c532-a8a9-46df-9b6f-e176622c20be" x="322" y="44" width="39" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Recibe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a7d4773d-3022-4edf-acb7-ed4b9f8e3f02" x="0" y="113" width="130" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[KARINA SALGUERO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19ba2cbd-8f10-4bb0-8458-087d015af6d7" x="0" y="127" width="153" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[COORDINACIÓN ADMINISTRATIVA]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="51147724-25c3-4bc8-ba5b-5b7897f50c6a" x="0" y="113" width="483" height="1"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement uuid="26a71ac6-5831-4218-ac00-40e2043fc0f8" x="153" y="43" width="1" height="98"/>
+			</line>
+			<line direction="BottomUp">
+				<reportElement uuid="9c840904-7ed2-43a5-baf0-b24f54fb0306" x="321" y="44" width="1" height="96"/>
+			</line>
+			<staticText>
+				<reportElement uuid="7105f3e1-6bc1-4fbe-b6cf-ee7a6bc263b6" x="154" y="113" width="143" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CARLOS HERNAN FIGUEROA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4d343957-96b5-4bac-9e40-f5032aac599a" x="154" y="127" width="143" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[AUXILIAR DE BOLETERIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="46c86424-f54c-4f8c-8a36-f659e3518404" x="322" y="114" width="141" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_depen_descrip}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="509dbd9b-a587-4eee-a105-9748d2e54c0d" x="399" y="15" width="60" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="657f309c-a49f-4dd7-adb2-334fc4bdac56" x="353" y="1" width="106" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

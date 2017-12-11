@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="56" uuid="1b033bd4-d953-4610-8508-ec47a784d693">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/jarteaga/Documentos/Sistema Prepagos/iteracion 11/implementacion/Sistema Control Tiquetes Prepago/src/sysctp/reporte/arqueoGeneral/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="anulados" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="disponibles" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="remision" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vendidos" class="JasperReport">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="id" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT fecha_reg,desde,hasta,can_tiq,observacion,act_desa FROM inventario.reg_rest_tiq 
+WHERE id_reg=$P{id}]]>
+	</queryString>
+	<field name="fecha_reg" class="java.sql.Timestamp"/>
+	<field name="desde" class="java.lang.Long"/>
+	<field name="hasta" class="java.lang.Long"/>
+	<field name="can_tiq" class="java.lang.Integer"/>
+	<field name="observacion" class="java.lang.String"/>
+	<field name="act_desa" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="104" splitType="Stretch">
+			<image>
+				<reportElement uuid="4c7b97c1-a731-49d3-af6f-5a0371cf7555" x="0" y="0" width="483" height="50"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="c1991b3d-54de-4521-8bb8-57d7ca20bfe6" x="78" y="61" width="353" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO DE RESTAURACIÓN TIQUETES PREPAGOS]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement uuid="2ad41a8f-1174-4476-b4eb-25882e1816fd" x="117" y="89" width="151" height="12"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="aceb146b-0f95-4664-a9a6-669fe1258fb2" x="0" y="89" width="117" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L"/>
+				</textElement>
+				<text><![CDATA[Fecha-Hora Generación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="701548a3-bbee-4642-9a66-9a285f1141ac" x="0" y="75" width="483" height="12"/>
+				<textElement/>
+				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="701548a3-bbee-4642-9a66-9a285f1141ac" x="0" y="50" width="483" height="12"/>
+				<textElement/>
+				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="13">
+			<staticText>
+				<reportElement uuid="0fcd1496-dc3b-483f-a738-314f60d43542" x="0" y="0" width="80" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Registro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="82bd4dc5-c785-4bad-8729-bcec3810c718" x="80" y="0" width="80" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bd18dfc9-4adb-4c59-a6cb-e2384b40595f" x="160" y="0" width="80" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c2dbd346-ebdb-4a4e-bb0f-f40ed974f4a8" x="240" y="1" width="39" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="28dfd8d4-694f-477a-b045-87637402e9b5" x="279" y="0" width="53" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e8c1919b-0b75-4211-be69-19321bd18845" x="431" y="0" width="52" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Mov.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17">
+			<textField>
+				<reportElement uuid="2049aec1-8611-4f9b-a83a-85610ded2bf6" x="0" y="0" width="80" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_reg}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f1c851f6-b401-44b4-a230-416d39554c29" x="80" y="0" width="80" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{desde}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="55c0adf7-793c-4538-8f97-ea82fd9aa350" x="160" y="0" width="80" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hasta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="49e198aa-443c-4505-a97f-c7f86215931f" x="240" y="0" width="39" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{can_tiq}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c7c405bc-6eda-4cfb-8250-f6d3f56f57f5" x="279" y="0" width="152" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3de45f75-3f5d-4bf9-9b3c-caf87a5b22ce" x="431" y="0" width="22" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{act_desa}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

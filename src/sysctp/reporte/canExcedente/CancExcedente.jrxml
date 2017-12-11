@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="451" leftMargin="72" rightMargin="72" topMargin="72" bottomMargin="72" uuid="efee47f5-fb67-41c3-826f-ebe35e81fc4c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="recibo" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="encabezado" class="java.io.InputStream">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT ex.id_acta_cambio,to_char(ex.pa_monto,'999G999G999G999D99')AS monto,ex.recibo_caja,fp.fp_descripcion,(cta.cban_banco ||'-'|| cta.cban_numero)as cuenta,
+acta.fecha,cli.cli_nit,(cli.cli_razon_social ||'-'|| sede.sede_descripcion)as cliente
+	 
+FROM ventas.cancelacion_excedentes ex  
+JOIN ventas.cambio_tiquete acta ON acta.id_acta_consecutivo=ex.id_acta_cambio 
+JOIN ventas.forma_de_pago fp ON fp.fp_id=ex.id_fp
+JOIN ventas.cuenta_bancaria cta ON cta.cban_id=ex.cban_id
+JOIN clientes.sedes_clientes sede ON sede.id_cliente_sede=acta.clie_sede
+JOIN clientes.cliente cli ON cli.cli_nit=sede.cli_nit
+
+WHERE ex.recibo_caja=$P{recibo}]]>
+	</queryString>
+	<field name="id_acta_cambio" class="java.lang.Long"/>
+	<field name="monto" class="java.lang.String"/>
+	<field name="recibo_caja" class="java.lang.Long"/>
+	<field name="fp_descripcion" class="java.lang.String"/>
+	<field name="cuenta" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="cli_nit" class="java.lang.Long"/>
+	<field name="cliente" class="java.lang.String"/>
+	<title>
+		<band height="219" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement uuid="742545a5-3499-447f-bfa9-906ec4c1a269" x="0" y="64" width="128" height="40" backcolor="#CEF2ED"/>
+			</rectangle>
+			<image>
+				<reportElement uuid="f8661ee9-1126-48b5-805b-32fe105bafa2" x="0" y="0" width="450" height="50"/>
+				<imageExpression><![CDATA[$P{encabezado}]]></imageExpression>
+			</image>
+			<rectangle>
+				<reportElement uuid="a218f246-ec3b-41cc-8e16-f29b268d62a5" x="1" y="120" width="450" height="60"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="94fe88c6-27ac-40f3-b963-96d6de62d9d9" x="14" y="64" width="102" height="12"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECIBO DE CAJA N°: ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="3994b6ad-3d1a-4495-9571-5e57117aa861" x="14" y="76" width="100" height="14"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="1ae7d480-dc2e-46d2-b9bb-47be5ecf2cb5" x="16" y="76" width="98" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recibo_caja}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4a11ab12-043c-4ff5-9a78-0a4920bfb824" x="1" y="120" width="39" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8071a350-85c1-401d-b219-7fed18dbe22c" x="1" y="134" width="39" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Pago:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="3fe322fd-878f-49a4-91ea-5680f16c038c" x="1" y="132" width="451" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="676b1e58-cb4c-4a0b-b933-819a6abcd5ab" x="43" y="134" width="229" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fp_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="055de99f-a2ee-404f-bcf0-e3ab98db232d" x="43" y="120" width="127" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8e1820c8-7ff3-4b59-a15b-fa28b642cacc" x="1" y="145" width="42" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Banco:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="b4909d1f-ef5f-44ea-90de-107fcd53086e" x="1" y="145" width="450" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="964d2dbb-ce76-4773-879a-e5b7a57c6a57" x="43" y="146" width="226" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5fd9209a-18de-4bfe-a589-ee7723ea26a8" x="1" y="156" width="39" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="abec079a-dc6f-4215-8d43-ae58b78f0452" x="43" y="156" width="334" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="ae4b3448-9c0b-4d19-84ab-e144a48fa20d" x="1" y="156" width="450" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="3402cbaf-91ac-4143-9642-86adfd9aba8c" x="1" y="167" width="450" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="51fac7e5-a2ca-4c7d-a75c-98abd6926981" x="1" y="168" width="29" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Nit:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="6f1ecae4-f5bd-4829-8038-87e20ee934bb" x="43" y="168" width="226" height="12"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_nit}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement uuid="1ef5186d-34a2-45ed-a9a5-e8d046d8b69f" x="1" y="180" width="233" height="36"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b916e1ca-08d3-4fa6-9544-fa4e2792c932" x="3" y="191" width="114" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL A PAGAR: $]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a603d374-ce09-4bd9-a1d4-295f79f6befd" x="189" y="50" width="114" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT: 830.059.605-1]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="cee5ace9-fc6c-400d-937c-bb4c5cc430c1" x="117" y="191" width="117" height="14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="79870895-4d29-419f-9749-548c5aa5c6c3" x="1" y="106" width="450" height="14"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="673b2f75-8485-4253-ab31-b4727d71bd3a" x="146" y="106" width="205" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANCELACIÓN DE EXCEDENTES]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

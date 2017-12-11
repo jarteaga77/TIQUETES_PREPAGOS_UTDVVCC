@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="74b497cc-ce79-46b2-9b51-acfcf81043a2">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="229"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="nit" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[$P{nit}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/jarteaga/Documentos/Sistema Prepagos/iteracion 7/implementacion/Sistema Control Tiquetes Prepago/src/sysctp/reportes/venta/Clientes/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<parameter name="fechaIni" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT ven.ven_fecha_hora, ven.cli_nit,(cli.cli_razon_social ||'-'|| sede.sede_descripcion)AS cliente,ven.ven_recibo_caja,dv.dv_serial_1,dv.dv_serial_2,
+(cat.cat_nombre ||'-'|| tea.tea_nombre ||' año: ' || etp.etp_anio)AS descripcion,
+to_char(etp.etp_precio,'999G999G999G999D99')AS vlorUnitario,(dv.dv_serial_2-dv.dv_serial_1 + 1)*(etp.etp_precio)AS subtotal,fp.fp_descripcion,
+(cta.cban_banco ||'-'||cta.cban_numero)AS banco, to_char(SUM(pa_monto),'999G999G999G999D99')AS monto
+
+FROM 
+
+ventas.venta ven JOIN ventas.detalle_venta dv ON ven.ven_id=dv.ven_id
+JOIN clientes.cliente cli ON ven.cli_nit=cli.cli_nit
+JOIN clientes.sedes_clientes sede ON ven.clie_sede=sede.id_cliente_sede
+JOIN inventario.especificacion_tiquete_prepago etp ON dv.etp_id=etp.etp_id
+JOIN inventario.categoria cat ON cat.cat_id=etp.cat_id
+JOIN inventario.tipo_eje_adicional tea ON tea.tea_id=etp.tea_id
+JOIN ventas.pago pa ON pa.ven_id=ven.ven_id
+JOIN ventas.forma_de_pago fp ON fp.fp_id=pa.fp_id
+JOIN ventas.cuenta_bancaria cta ON cta.cban_id=pa.cban_id
+
+WHERE ven.clie_sede=$P{nit} AND ven_fecha_hora between $P{fechaIni} AND $P{fechaFin}
+
+GROUP BY ven.ven_fecha_hora,ven.cli_nit,cli.cli_razon_social,sede.sede_descripcion,ven.ven_recibo_caja,dv.dv_serial_1,
+dv.dv_serial_2,cat.cat_nombre,tea.tea_nombre,etp.etp_anio,etp.etp_precio,fp.fp_descripcion,cta.cban_banco,cta.cban_numero
+
+ORDER BY ven.ven_fecha_hora ASC]]>
+	</queryString>
+	<field name="ven_fecha_hora" class="java.sql.Timestamp"/>
+	<field name="cli_nit" class="java.lang.Long"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="ven_recibo_caja" class="java.lang.Long"/>
+	<field name="dv_serial_1" class="java.lang.Long"/>
+	<field name="dv_serial_2" class="java.lang.Long"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="vlorunitario" class="java.lang.String"/>
+	<field name="subtotal" class="java.lang.Long"/>
+	<field name="fp_descripcion" class="java.lang.String"/>
+	<field name="banco" class="java.lang.String"/>
+	<field name="monto" class="java.lang.String"/>
+	<variable name="total" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="130" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="da26a07d-a375-499e-a5b5-e9feaad51780" x="352" y="61" width="95" height="14"/>
+				<textElement>
+					<font size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT:830.059.605-1]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6bb71ead-e0f4-4f1d-bed4-f82edfee6bef" x="119" y="0" width="683" height="57"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="c795ab47-083f-4073-94e4-51a4ea1c0f97" x="0" y="90" width="34" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement uuid="28560994-f132-441d-ad62-c7c7d97099e1" x="34" y="90" width="100" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="36fd3874-8eed-4cff-9aba-14b5a1dc1bf7" x="0" y="115" width="49" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b46aabe6-63ff-49cb-8144-9896ff22ab85" x="317" y="76" width="174" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE VENTAS POR CLIENTES]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="560d27e4-ba67-4d0c-b4cd-5fa30dfdc636" x="0" y="75" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="e10a3f93-205f-4d54-b0b1-71dc457ef2f2" x="49" y="115" width="341" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="01f70ba3-074f-4a41-be4b-df50758f3271" x="390" y="115" width="49" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[NIT:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="46a8d833-3f5e-490e-aa1a-580f3013b0c6" x="439" y="115" width="251" height="14"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cli_nit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="676e712a-14d0-4176-9b29-312fe7007307" x="0" y="0" width="34" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a252ac12-66c3-4023-9b75-584106f3ab1c" x="75" y="0" width="75" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Recibo de Caja N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="746650dc-edf1-4575-8d3a-3deace32d266" x="467" y="0" width="61" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Valor Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="df7f00e3-a030-4892-bb0f-af47225f5d58" x="556" y="1" width="40" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7cad03ec-2410-4981-86a2-0345dc0061f4" x="712" y="0" width="78" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Banco / N°Cuenta]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="bace19cc-c3ed-4427-b2a0-f55f8efb9c5d" x="-1" y="14" width="802" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="71d1a5f7-6ad5-438e-a5ff-4e2d3d31baad" x="150" y="0" width="54" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Serial Inicial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a9551ca5-5300-4e69-92de-0d1914d4c5fb" x="216" y="0" width="50" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Serial Final]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9d2a877a-0abc-4c68-a967-67fbb5d16fe0" x="645" y="0" width="67" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Forma de Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d6f1e4ed-02cb-4884-a6c7-23b714d21eba" x="281" y="1" width="48" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ea199f43-b956-4f75-b2f9-b2aa36ea7472" x="0" y="0" width="75" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ven_fecha_hora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="db5c4cd0-70b3-4c03-894f-2ab04d59f926" x="75" y="0" width="75" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ven_recibo_caja}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0192f919-38db-4956-a26a-936c202bfb22" x="150" y="0" width="66" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dv_serial_1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="35b7b047-3266-48d6-b8db-e297307d551e" x="281" y="1" width="186" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c8f5853a-4842-4f44-b2ba-72ffe596cf49" x="467" y="1" width="89" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vlorunitario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f0037c83-10d6-4e60-8d9f-0eb1fbf5749d" x="645" y="0" width="67" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fp_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d58b34e-4ac0-4bf1-8a74-580f026e6a48" x="712" y="0" width="89" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{banco}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="de157d21-de52-444a-afc0-53a8c10f7155" x="0" y="13" width="802" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="41a8f1e3-c12f-4c28-8e35-e6e705095fe0" x="216" y="1" width="65" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dv_serial_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2c9056e1-59c0-45e3-97f5-52648ff7ebbb" x="556" y="1" width="89" height="14"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="17">
+			<staticText>
+				<reportElement uuid="2c2e3074-fedd-4e62-8959-4a03a868d487" x="508" y="0" width="107" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Consolidado: $]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement uuid="0895e74b-a860-4f29-a594-7fe182900f9c" x="615" y="0" width="186" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

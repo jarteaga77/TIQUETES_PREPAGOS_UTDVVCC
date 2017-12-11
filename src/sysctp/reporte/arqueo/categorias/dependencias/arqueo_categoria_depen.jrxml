@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7f611b0d-7c01-44d4-9a84-6e13a7660a1a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="24"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha_ini" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fecha_fin" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.io.InputStream"/>
+	<queryString>
+		<![CDATA[SELECT (cat.cat_nombre ||'-'|| tea.tea_nombre)AS categoria, SUM((dv.dvd_serial_2-dv.dvd_serial_1 +1))AS cantidad,
+SUM((dv.dvd_serial_2-dv.dvd_serial_1 + 1)*(etp.etp_precio))AS subtotal
+
+FROM ventas.detalle_venta_dependencia dv 
+JOIN ventas.venta_dependencia ven ON ven.ven_dep_id=dv.ven_dep_id
+JOIN inventario.especificacion_tiquete_prepago etp ON etp.etp_id=dv.etp
+JOIN inventario.categoria cat ON cat.cat_id=etp.cat_id
+JOIN inventario.tipo_eje_adicional tea ON tea.tea_id=etp.tea_id
+
+
+WHERE ven.ven_dep_fecha between $P{fecha_ini} AND $P{fecha_fin}
+
+GROUP BY cat.cat_nombre,tea.tea_nombre
+
+ORDER BY categoria ASC]]>
+	</queryString>
+	<field name="categoria" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="subtotal" class="java.math.BigDecimal"/>
+	<variable name="totalventa" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{subtotal}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="91" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d65d38bb-7d70-4f08-9cf7-2bba1b726343" x="278" y="50" width="294" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE POR CATEGORIA DEPENDENCIAS]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="32721c62-32a2-4fdd-98bf-7b6e63b855ec" x="0" y="0" width="802" height="50"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement uuid="3888f8dc-ade2-4a96-b5d3-80d8d5dbe3d1" x="60" y="76" width="187" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="0ba806d0-8643-41e6-a8de-7f1d8c28e21e" x="0" y="76" width="60" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fecha - Hora:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="14">
+			<rectangle radius="10">
+				<reportElement uuid="63f98a15-798b-4b96-b797-87406b775824" x="0" y="0" width="802" height="12" backcolor="#C1E5E4"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="bef40852-1fe0-452e-807e-d319b8c56ffd" x="32" y="0" width="55" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Categoria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f51a3f2d-27e7-4126-9755-a0696b44797b" x="650" y="0" width="46" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subtotal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dee0971b-1350-4928-82e8-c0cebfe7ba1f" x="373" y="0" width="46" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField>
+				<reportElement uuid="59cf49ef-c22e-44d3-ab42-849ed59467d6" x="32" y="0" width="247" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{categoria}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement uuid="f58ae085-a04e-4833-affd-b77cbc88bf00" x="373" y="0" width="63" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="9630b962-8790-4bc4-844d-0e1f00e71d7e" x="650" y="0" width="136" height="12"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8e07bedb-7bac-43ab-b2fc-6cd0930d3698" x="0" y="10" width="802" height="12"/>
+				<textElement/>
+				<text><![CDATA[----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="470" splitType="Stretch">
+			<pie3DChart>
+				<chart>
+					<reportElement uuid="b6afa3a4-377b-4ea8-a4b0-ddfbe61eefac" x="0" y="14" width="802" height="456"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{categoria}]]></keyExpression>
+					<valueExpression><![CDATA[$F{cantidad}]]></valueExpression>
+					<labelExpression><![CDATA[$F{categoria}+ "-" +$F{cantidad}]]></labelExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel>
+						<font fontName="Century Schoolbook L" size="7" isBold="true"/>
+					</itemLabel>
+				</pie3DPlot>
+			</pie3DChart>
+			<textField pattern="¤ #,##0.00">
+				<reportElement uuid="500d726c-0090-40ab-826b-392c5f2beb30" x="638" y="0" width="162" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{totalventa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1c0c5442-f0b9-44c3-b6f7-dcca632cdff4" x="556" y="0" width="82" height="14"/>
+				<textElement>
+					<font fontName="Century Schoolbook L" size="9"/>
+				</textElement>
+				<text><![CDATA[TOTAL VENTA:$]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
